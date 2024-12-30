@@ -2,11 +2,11 @@
   <div class="home">
     <div class="container">
       <div class="free-poker-header">
-        <h1>Scrum poker made simple and <span>free</span>.</h1>
+        <h1>{{ $t('scrum_made_easy') }} <span>{{ $t('free') }}</span>.</h1>
       </div>
       <div class="start-game">
         <button class="button" :class="{ disabled: clickedStart }" @click="startGame()">
-          <span v-if="!clickedStart">Create room</span>
+          <span v-if="!clickedStart">{{ $t('create_room') }}</span>
           <svg
               v-if="clickedStart"
               version="1.1"
@@ -57,17 +57,19 @@ import router from "@/router";
 import {io} from "socket.io-client";
 import {ref} from 'vue';
 import {useGameEngine} from "@/composables/useGameEngine";
+import { useTranslation } from "i18next-vue";
 import GameFormat from "@/view-models/gameFormat";
 
 const {socket, setSocket} = useGameEngine();
 const clickedStart = ref(false);
 const hasStarted = ref(false);
+const { t } = useTranslation();
 
 function startGame() {
   clickedStart.value = true;
   setTimeout(() => {
     if (!hasStarted.value) {
-      alert("Looks like there's a problem connecting you to the server 😕");
+      alert(t("connection_issue"));
     }
   }, 6000);
   registerSocket();
@@ -86,7 +88,7 @@ function registerSocket() {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang="scss"> 
 .home {
   display: flex;
   justify-content: center;
@@ -102,6 +104,28 @@ function registerSocket() {
   align-items: center;
   justify-content: center;
   width: 800px;
+}
+
+.free-poker-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  height: 80%;
+  width: 100%;
+
+  h1 {
+    user-select: none;
+    font-size: 3.2em;
+
+    span {
+      color: #54e8dd;
+      background: black;
+      border-radius: 10px;
+      padding: 0 0.5rem;
+      display: inline-block;
+    }
+  }
 }
 
 .start-game {
